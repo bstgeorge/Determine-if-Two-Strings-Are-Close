@@ -4,47 +4,43 @@
  * @return {boolean}
  */
 var closeStrings = function(word1, word2) {
-    // Operations 1: transformation on word1; check against word2
-    console.log('Operation 1:')
-    let word1Arr = word1.split('');
-    for (let i = 0; i < word1.length - 1; i++) {
-      let letter1 = word1Arr[i]
-      for (let j = i + 1; j < word1.length; j++) {
-        let letter2 = word1Arr[j];
-        word1Arr[i] = letter2;
-        word1Arr[j] = letter1;
-        let newWord = word1Arr.join('');
+  // operation 2 helper function
+  let operation2 = function(newWord, word2) {
+    console.log('Operation 2:')
+    for (let i = 0; i < newWord.length - 1; i++) {
+      let char1 = newWord.charAt(i);
+      for (let j = i; j < newWord.length; j++) {
+        let char2 = newWord.charAt(j);
+        newWord = newWord.replaceAll(char1, '@').replaceAll(char2, '#');
+        newWord = newWord.replaceAll('@', char2).replaceAll('#', char1);
         console.log(newWord, ' === ', word2);
         if (newWord === word2) {
           return true;
         }
-        word1Arr = newWord.split('');
-
-        console.log('Operation 2:')
-        newWord = newWord.replaceAll(letter1, '@').replaceAll(letter2, '#');
-        newWord = newWord.replaceAll('@', letter2).replaceAll('#', letter1);
-        console.log(newWord, ' === ', word2);
-        if (newWord === word2) {
-          return true;
-        }
-        word1Arr = word1.split('');
       }
     }
-    // Operation 2: transformation on word1; check against word2
-    // console.log('Operation 2:')
-    // word1Arr = word1.split('');
-    // for (let i = 0; i < word1.length - 1; i++) {
-    //   let letter1 = word1Arr[i];
-    //   for (let j = i + 1; j < word1.length; j++) {
-    //       let letter2 = word1Arr[j];
-    //       let newWord = word1.replaceAll(word1Arr[i], '@').replaceAll(word1Arr[j], '#')
-    //       newWord = newWord.replaceAll('@', letter2).replaceAll('#', letter1);
-    //       console.log(newWord, ' === ', word2);
-    //       if (newWord === word2) {
-    //         return true;
-    //     }
-    //     word1Arr = word1.split('');
-    //   }
-    // }
     return false;
+  }
+
+  // operations 1 helper function
+  let operation1 = function (word1, word2) {
+    for (let i = 0; i < word1.length - 1; i++) {
+      // let word1Arr = word1.split('');
+      let letter1 = word1.charAt(i);
+      for (let j = i + 1; j < word1.length; j++) {
+        let letter2 = word1.charAt(j);
+        let wordArr = word1.split('')
+        wordArr[i] = letter2;
+        wordArr[j] = letter1;
+        let newWord = wordArr.join('');
+        console.log('Operation 1:');
+        console.log(newWord, ' === ', word2);
+        if (newWord === word2 || operation2(newWord, word2) === true) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  return operation1(word1, word2);
 };
